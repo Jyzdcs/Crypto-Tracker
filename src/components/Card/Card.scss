@@ -1,0 +1,23 @@
+@media (max-width: 544px)
+{
+	.card-container {
+		display: grid;
+		height: 80px;
+		width: 130px;
+		box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.285);
+		border-radius: 10px;
+
+		.stat-container {
+			position: relative;
+			width: 100%;
+		}
+
+		.card-title {
+			margin: 0;
+		}
+
+		h4 {
+			margin: 0;
+		}
+	}
+}
