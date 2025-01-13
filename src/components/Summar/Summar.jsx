@@ -1,61 +1,53 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchDataCrypto } from "../fetchDataCrypto";
-import { useState } from "react";
+import { fetchDataCrypto } from "../tools/fetchDataCrypto";
+import { useRef, useState } from "react";
 import Card from "../Card/Card"
 import "./Summar.scss"
-import { getDominance } from "../getDominance";
-import { getMarketCapTot } from "../getMarketCapTot";
-import { getPercentDiff } from "../getPercentDiff";
+import { getMarketCap } from "../tools/getMarketCap";
+import { getPercentDiff } from "../tools/getPercentDiff";
 
 export default function Summar() {
-	let marketCapTot = 0
-	const [oldData, setOldData] = useState([])
-	const { isPending, error, data } = useQuery({
+	const previous = useRef()
+	let percent = {}
+	const { isPending, isSuccess, error, data: newData } = useQuery({
 		queryKey: ['repoData'],
-		queryFn: async () => {
-			const res = await fetch("https://api.coincap.io/v2/assets");
-			const dataJson = await res.json();
-
-			if (data)
-				setOldData(data)
-			return dataJson.data;
-		},
-		staleTime: 10000,
+		queryFn: async () => fetchDataCrypto(),
+		staleTime: 3000,
 	})
-	if (data)
+	if (isSuccess)
 	{
-		getPercentDiff(oldData, data)
+		// if (previous.current)
+		previous.current = newData
+		getMarketCap(newData[0].marketCapUsd)
 	}
 	return (
 		<>
 		{isPending ? <div>LOADING ...</div> :
-			<div className="summar-container">
-				<div className="sentence-intro">
-					<h3>Today's cryptocurrencies by Market Cap</h3>
-					<p>The global crypto market cap is ...  increase over the last day.</p>
-				</div>
-				<div className="cards-container">
-					<Card 
-					title="Market Cap"
-					body={
-						`$${getMarketCapTot(data).str}T`
-					}
-					spe={getPercentDiff(oldData, data)}
-					/>
-					<Card 
-					title="CMC100"
-					body="$3.25T"
-					/>
-					<Card 
-					title="Dominance"
-					body={getDominance(data).dominance}
-					spe={getDominance(data).symbol}
-					/>
-					<Card 
-					title="Fear & Greed"
-					body="$3.25T"
-					/>
-				</div>
+			<div className="card-container">
+				<Card
+					title={newData[0].name}
+					symbol={newData[0].symbol}
+					price={newData[0].priceUsd.substr(0, String(Number(newData[0].priceUsd).toFixed(0)).length)}
+					logo={newData[0].symbol}
+					percent="1"
+					cap={getMarketCap(newData[0].marketCapUsd)}
+				/>
+				<Card
+					title={newData[4].name}
+					symbol={newData[4].symbol}
+					price={newData[4].priceUsd.substr(0, String(Number(newData[4].priceUsd).toFixed(0)).length)}
+					logo={newData[4].symbol}
+					percent="1"
+					cap={newData[4].marketCapUsd}
+				/>
+				<Card
+					title={newData[2].name}
+					symbol={newData[2].symbol}
+					price={newData[2].priceUsd.substr(0, String(Number(newData[2].priceUsd).toFixed(0)).length)}
+					logo={newData[2].symbol}
+					percent="1"
+					cap={newData[2].marketCapUsd}
+				/>
 			</div>
 		}
 		</>

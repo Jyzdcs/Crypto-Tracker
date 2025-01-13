@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./home.scss"
 import Header from "../components/Header/Header";
 import Summar from "../components/Summar/Summar"
 async function getBtcTickers() {
@@ -9,7 +10,7 @@ async function getBtcTickers() {
 
 export default function Home() {
 	return (
-		<div>
+		<div className="main-container">
 			<Header />
 			<Summar />
 		</div>
