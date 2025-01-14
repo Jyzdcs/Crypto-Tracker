@@ -3,9 +3,9 @@ body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	font-family: Inter, -apple-system, BlinkMacSystemFont, segoe ui, Roboto, Helvetica, Arial, sans-serif;
-	background-color: rgb(42, 40, 56);
-	color: white;
+	background: linear-gradient(135deg, #121212, #1E1E1E);
+	color: #EAEAEA; /* Couleur du texte principale */
+	/* color: white; */
 }
 
 p {

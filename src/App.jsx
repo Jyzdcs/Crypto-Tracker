@@ -8,15 +8,13 @@ const queryClient = new QueryClient()
 
 function App() {
 	return (
-		<>
-			<BrowserRouter>
-				<QueryClientProvider client={queryClient}>
-					<Routes>
-						<Route path='/' Component={Home}/>
-					</Routes>
-			  </QueryClientProvider>
-			</BrowserRouter>
-		</>
+		<BrowserRouter>
+			<QueryClientProvider client={queryClient}>
+				<Routes>
+					<Route path='/' Component={Home}/>
+				</Routes>
+			</QueryClientProvider>
+		</BrowserRouter>
 	)
 }
 
